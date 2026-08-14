@@ -21,8 +21,6 @@ services:
         value: production
       - key: APP_DEBUG
         value: "false"
-      - key: APP_URL
-        value: https://support-tracker-8uj6.onrender.com
       - key: APP_KEY
         generateValue: true
       - key: DB_CONNECTION
