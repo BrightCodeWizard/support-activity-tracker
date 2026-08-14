@@ -1,0 +1,51 @@
+databases:
+  - name: support-tracker-db
+    databaseName: support_tracker
+    user: support_tracker
+    plan: free
+    region: oregon
+
+services:
+  - type: web
+    name: support-tracker
+    runtime: php
+    plan: free
+    region: oregon
+    rootDir: .
+    healthCheckPath: /up
+    buildCommand: |
+      composer install --no-dev --optimize-autoloader
+      php artisan config:cache
+      php artisan route:cache
+      php artisan view:cache
+    releaseCommand: |
+      php artisan migrate --force
+      php artisan db:seed --force
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: APP_NAME
+        value: Support Team Daily Activity Tracker
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_URL
+        value: https://${RENDER_EXTERNAL_URL}
+      - key: APP_KEY
+        generateValue: true
+      - key: PHP_VERSION
+        value: "8.3"
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_URL
+        fromDatabase:
+          name: support-tracker-db
+          property: connectionString
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: LOG_CHANNEL
+        value: stack
