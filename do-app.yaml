@@ -2,41 +2,58 @@ name: support-tracker
 region: nyc
 services:
   - name: support-tracker
-    github:
-      repo: BrightCodeWizard/support-activity-tracker
+    git:
       branch: main
+      repo_clone_url: https://github.com/BrightCodeWizard/support-activity-tracker.git
     dockerfile_path: ./Dockerfile
     source_dir: /
     http_port: 8080
     instance_count: 1
     instance_size_slug: basic-xxs
     health_check:
+      initial_delay_seconds: 60
+      period_seconds: 10
+      timeout_seconds: 5
+      success_threshold: 1
+      failure_threshold: 5
       http_path: /up
     envs:
       - key: APP_NAME
         value: Support Team Daily Activity Tracker
+        scope: RUN_TIME
       - key: APP_ENV
         value: production
+        scope: RUN_TIME
       - key: APP_DEBUG
         value: "false"
+        scope: RUN_TIME
       - key: APP_URL
-        value: https://support-tracker.ondigitalocean.app
+        value: https://support-tracker-l8ft3.ondigitalocean.app
+        scope: RUN_TIME
       - key: APP_KEY
         value: base64:4C1WgcwZtVLFKfTTklbeeD+jdyCcpzf6mt8YWsMShuA=
+        scope: RUN_TIME
       - key: PORT
         value: "8080"
+        scope: RUN_TIME
       - key: DB_CONNECTION
         value: pgsql
+        scope: RUN_TIME
       - key: DB_URL
-        value: ${DATABASE_URL}
+        value: ${support-tracker-db.DATABASE_URL}
+        scope: RUN_TIME
       - key: SESSION_DRIVER
         value: database
+        scope: RUN_TIME
       - key: CACHE_STORE
         value: database
+        scope: RUN_TIME
       - key: QUEUE_CONNECTION
         value: database
+        scope: RUN_TIME
       - key: LOG_CHANNEL
         value: stack
+        scope: RUN_TIME
 databases:
   - name: support-tracker-db
     engine: PG
