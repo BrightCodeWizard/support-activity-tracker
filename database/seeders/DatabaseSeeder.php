@@ -120,12 +120,23 @@ class DatabaseSeeder extends Seeder
                         ->exists();
 
                     if (! $exists) {
+                        $remarks = [
+                            'All good, verified against logs.',
+                            'Minor delay, resolved quickly.',
+                            'Completed on schedule.',
+                            'Escalated to Level 2.',
+                            'No issues detected.',
+                            'Variance flagged, investigating.',
+                            'Follow-up with vendor done.',
+                            'Checked and confirmed.',
+                        ];
+
                         ActivityUpdate::create([
                             'activity_id' => $model->id,
                             'user_id' => $user->id,
                             'update_date' => $date->toDateString(),
                             'status' => collect(['done', 'done', 'done', 'pending'])->random(),
-                            'remark' => fake()->optional(0.7)->sentence(),
+                            'remark' => mt_rand(1, 100) <= 70 ? $remarks[array_rand($remarks)] : null,
                         ]);
                     }
                 }
