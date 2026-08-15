@@ -35,8 +35,4 @@
             </button>
         </form>
     </div>
-
-    <p class="text-center text-slate-500 text-xs mt-6">
-        Demo accounts — admin@support.local / kofi@support.local / abena@support.local (password: password)
-    </p>
 @endsection
