@@ -1,0 +1,44 @@
+name: support-tracker
+region: nyc
+services:
+  - name: support-tracker
+    github:
+      repo: BrightCodeWizard/support-activity-tracker
+      branch: main
+    dockerfile_path: ./Dockerfile
+    source_dir: /
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    health_check:
+      http_path: /up
+    envs:
+      - key: APP_NAME
+        value: Support Team Daily Activity Tracker
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_URL
+        value: https://support-tracker.ondigitalocean.app
+      - key: APP_KEY
+        value: base64:4C1WgcwZtVLFKfTTklbeeD+jdyCcpzf6mt8YWsMShuA=
+      - key: PORT
+        value: "8080"
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_URL
+        value: ${DATABASE_URL}
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: LOG_CHANNEL
+        value: stack
+databases:
+  - name: support-tracker-db
+    engine: PG
+    production: false
+    size: db-s-0vcpu-1gb
